@@ -15,39 +15,40 @@ data:
         root /usr/share/nginx/html;
         index index.html;
 
+        # API proxy endpoints - frontend handles API routing
+        location /api/stats {
+            proxy_pass http://stats-service.url-shortener.svc.cluster.local:8003/stats;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        }
+
+        location /api/generate {
+            proxy_pass http://link-service.url-shortener.svc.cluster.local:8001/generate;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        }
+
+        location /api/delete {
+            proxy_pass http://link-service.url-shortener.svc.cluster.local:8001/delete;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            add_header 'Access-Control-Allow-Origin' '*' always;
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
+        }
+
         # Serve static files
         location / {
             try_files $uri $uri/ /index.html;
             add_header 'Access-Control-Allow-Origin' '*' always;
             add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
             add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-        }
-
-        # Proxy API requests to the nginx gateway
-        location /api/ {
-            proxy_pass http://nginx-gateway.url-shortener.svc.cluster.local:80;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            
-            # CORS headers
-            add_header 'Access-Control-Allow-Origin' '*' always;
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
-            add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization' always;
-            
-            if ($request_method = 'OPTIONS') {
-                return 204;
-            }
-        }
-
-        # Proxy redirect requests to the nginx gateway
-        location /r/ {
-            proxy_pass http://nginx-gateway.url-shortener.svc.cluster.local:80;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
         }
 
         # Health check

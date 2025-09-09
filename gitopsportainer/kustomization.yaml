@@ -7,19 +7,14 @@ metadata:
 
 resources:
   - 00-namespace.yaml
+  - 00-secrets.yaml
   - 01-postgres-config.yaml
   - 02-postgres.yaml
   - 03-link-service.yaml
   - 04-redirect-service.yaml
   - 05-stats-service.yaml
-  - 06-nginx-gateway.yaml
   - 07-frontend.yaml
-  - 08-loadbalancer.yaml
-
-commonLabels:
-  app.kubernetes.io/name: url-shortener
-  app.kubernetes.io/instance: gitops
-  app.kubernetes.io/managed-by: portainer
+  - simple-ingress.yaml
 
 namespace: url-shortener
 
@@ -33,18 +28,6 @@ images:
   - name: itsbaivab/url-shortener-frontend
     newTag: latest
 
-replicas:
-  - name: link-service
-    count: 2
-  - name: redirect-service
-    count: 2
-  - name: stats-service
-    count: 2
-  - name: nginx-gateway
-    count: 2
-  - name: frontend
-    count: 2
-
 configMapGenerator:
   - name: app-config
     literals:
@@ -52,25 +35,6 @@ configMapGenerator:
       - LOG_LEVEL=info
       - DB_MAX_CONNECTIONS=100
       - CACHE_TTL=3600
-
-patchesStrategicMerge:
-  - |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: link-service
-      namespace: url-shortener
-    spec:
-      template:
-        spec:
-          containers:
-          - name: link-service
-            env:
-            - name: ENVIRONMENT
-              valueFrom:
-                configMapKeyRef:
-                  name: app-config
-                  key: ENVIRONMENT
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -22,11 +22,20 @@ spec:
           image: postgres:15-alpine
           env:
             - name: POSTGRES_DB
-              value: urlshortener
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: database
             - name: POSTGRES_USER
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: username
             - name: POSTGRES_PASSWORD
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
             - name: PGDATA
               value: /var/lib/postgresql/data/pgdata
           ports:
