@@ -1,21 +1,38 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: url-shortener-ingress
+  name: url-shortener-simple-ingress
   namespace: url-shortener
   labels:
     app: url-shortener
     managed-by: portainer
   annotations:
-    # Create a dedicated nginx location for /r/{id} that rewrites to /redirect/{id}
-    # and proxies directly to the redirect service. This scopes rewrite to the
-    # specific location (avoids global rewrite-target side-effects).
+    nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/server-snippet: |
-      # handle short redirect paths and proxy to redirect-service
       location ~ ^/r/(.*)$ {
-        # rewrite to internal path expected by the redirect service
         rewrite ^/r/(.*)$ /redirect/$1 break;
         proxy_pass http://redirect-service.url-shortener.svc.cluster.local:8002;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+      location = /api/stats {
+        rewrite ^/api/stats$ /stats break;
+        proxy_pass http://stats-service.url-shortener.svc.cluster.local:8003;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+      location = /api/generate {
+        rewrite ^/api/generate$ /generate break;
+        proxy_pass http://link-service.url-shortener.svc.cluster.local:8001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      }
+      location = /api/delete {
+        rewrite ^/api/delete$ /delete break;
+        proxy_pass http://link-service.url-shortener.svc.cluster.local:8001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -25,7 +42,7 @@ spec:
   rules:
     - http:
         paths:
-          # Frontend handles everything (static files + API proxy via frontend nginx)
+          # Frontend - serves static files and handles everything else
           - path: /
             pathType: Prefix
             backend:

@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-# Minimal deploy script for the URL Shortener
+# Complete single-file deploy script for the URL Shortener
 NAMESPACE="url-shortener"
 DIR="$(cd "$(dirname "$0")" && pwd)"
 
@@ -16,7 +16,10 @@ MANIFESTS=(
     05-stats-service.yaml
     07-frontend.yaml
     simple-ingress.yaml
+    ingress-controller.yaml
 )
+
+# Check if ingress controller is installed
 
 echo "🔧 Applying manifests from $DIR"
 for f in "${MANIFESTS[@]}"; do
