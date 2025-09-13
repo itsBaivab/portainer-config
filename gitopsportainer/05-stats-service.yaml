@@ -16,8 +16,6 @@ spec:
       labels:
         app: stats-service
     spec:
-      nodeSelector:
-        non-existent: "true"
       containers:
         - name: stats-service
           image: itsbaivab/url-shortener-stats:latest
