@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: stats-service
-          image: itsbaivab/url-shortener-stats:latest
+          image: itsbaivab/url-shortener-stats:none
           env:
             - name: DB_HOST
               value: postgres.url-shortener.svc.cluster.local
