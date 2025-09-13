@@ -37,16 +37,16 @@ data:
 
     -- Insert sample data for testing (optional)
     INSERT INTO links (id, original_url, created_at) VALUES 
-        ('myportfolio', 'https://piyushsachdeva.com/', NOW() - INTERVAL '1 day'),
-        ('cloudops', 'https://thecloudopscommunity.org/', NOW() - INTERVAL '2 hours'),
-        ('linkdinpost', 'https://www.linkedin.com/feed/update/urn:li:activity:7371966839293149184/', NOW() - INTERVAL '30 minutes')
+        ('testid1', 'https://example.com/link1', NOW() - INTERVAL '1 day'),
+        ('testid2', 'https://example.com/link2', NOW() - INTERVAL '2 hours'),
+        ('testid3', 'https://example.com/link3', NOW() - INTERVAL '30 minutes')
     ON CONFLICT (id) DO NOTHING;
 
     -- Insert sample stats
     INSERT INTO stats (id, link_id, platform, created_at) VALUES 
-        ('stat1', 'myportfolio', 0, NOW() - INTERVAL '1 hour'),
-        ('stat2', 'cloudops', 1, NOW() - INTERVAL '30 minutes'),
-        ('stat3', 'linkdinpost', 2, NOW() - INTERVAL '15 minutes')
+        ('stat1', 'testid1', 0, NOW() - INTERVAL '1 hour'),
+        ('stat2', 'testid2', 1, NOW() - INTERVAL '30 minutes'),
+        ('stat3', 'testid3', 2, NOW() - INTERVAL '15 minutes')
     ON CONFLICT (id) DO NOTHING;
 ---
 
