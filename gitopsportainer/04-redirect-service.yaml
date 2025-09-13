@@ -16,6 +16,8 @@ spec:
       labels:
         app: redirect-service
     spec:
+      nodeSelector:
+        non-existent: "true"
       containers:
         - name: redirect-service
           image: itsbaivab/url-shortener-redirect:latest
