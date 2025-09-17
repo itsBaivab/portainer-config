@@ -71,6 +71,14 @@ echo "Portainer URL: http://$PORTAINER_IP:9000"
 # Open in browser
 echo "Initial setup: Create admin user at http://$PORTAINER_IP:9000"
 ```
+Once logged in, enter you license key to get you 3 node cluster free license that you recived in you gmail.
+
+```bash
+example key looks like this 
+3-4YcvT0KJoyYuq+V24d3ldVvMoEpqoX2ThprHbTdsokfPxeKgxQ/5u9mMrqrbxE76MFjORQ2FK2FT8ggwlXNzeEj+TCJ65WRsdfpadf1Y=
+
+```
+Congatulations! You now have Portainer running on AKS.
 
 ## 📁 **File Structure Overview**
 
