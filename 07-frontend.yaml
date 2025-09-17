@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: piyushsachdeva/url-shortener-frontend:v1
+          image: piyushsachdeva/url-shortener-frontend:latest
           ports:
             - containerPort: 80
               name: http
