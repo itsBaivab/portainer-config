@@ -1,4 +1,3 @@
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,10 +16,9 @@ spec:
       labels:
         app: redirect-service
     spec:
-    
       containers:
         - name: redirect-service
-          image: itsbaivab/url-shortener-redirect:latest
+          image: piyushsachdeva/url-shortener-redirect:latest
           env:
             - name: DB_HOST
               value: postgres.url-shortener.svc.cluster.local
@@ -94,3 +92,4 @@ spec:
       name: http
   type: ClusterIP
 ---
+
