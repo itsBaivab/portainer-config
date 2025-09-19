@@ -74,32 +74,12 @@ echo "Initial setup: Create admin user at http://$PORTAINER_IP:9000"
 Once logged in, enter you license key to get you 3 node cluster free license that you recived in you gmail.
 
 ```bash
-example key looks like this 
+# example key looks like this
+
 3-4YcvT0KJoyYuq+V24d3ldVvMoEpqoX2ThprHbTdsokfPxeKgxQ/5u9mMrqrbxE76MFjORQ2FK2FT8ggwlXNzeEj+TCJ65WRsdfpadf1Y=
 
 ```
 Congatulations! You now have Portainer running on AKS.
-
-## 📁 **File Structure Overview**
-
-This directory contains all Kubernetes manifests organized by deployment order:
-
-```
-k8s/gitopsportainer/
-├── 00-namespace.yaml              # Creates url-shortener namespace
-├── 00-secrets.yaml                # Database credentials and app secrets
-├── 01-postgres-config.yaml        # PostgreSQL initialization SQL
-├── 02-postgres.yaml               # PostgreSQL StatefulSet with persistent storage
-├── 03-link-service.yaml           # Link generation microservice
-├── 04-redirect-service.yaml       # URL redirection microservice
-├── 05-stats-service.yaml          # Analytics and statistics microservice
-├── 07-frontend.yaml               # Frontend web application with nginx
-├── deploy.sh                      # Automated deployment script
-├── ingress-controller.yaml        # NGINX Ingress Controller installation
-├── simple-ingress.yaml            # Basic ingress configuration
-├── kustomization.yaml             # Kustomize configuration file
-└── README-GITOPS.md              # This comprehensive guide
-```
 
 ## 🚀 **Deployment Instructions**
 
@@ -150,6 +130,11 @@ kubectl apply -k .
 # Check deployment status
 kubectl get all -n url-shortener
 ```
+
+### **GitOps through Portainer**
+
+- Go to portainer dashboard and deploy your apps
+
 
 ## 🖼️ Assets for Portainer
 
