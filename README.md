@@ -51,7 +51,7 @@ kubectl get nodes
 kubectl create namespace portainer
 
 # Deploy Portainer with LoadBalancer service
-kubectl apply -n portainer -f https://downloads.portainer.io/ce-lts/portainer-lb.yaml
+kubectl apply -n portainer -f https://downloads.portainer.io/ee-lts/portainer-lb.yaml
 
 # Check Portainer deployment
 kubectl get pods -n portainer
